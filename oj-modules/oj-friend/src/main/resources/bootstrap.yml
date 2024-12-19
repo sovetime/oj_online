@@ -1,0 +1,6 @@
+server:
+  port: 8182
+
+spring:
+  application:
+    name: oj-friend
