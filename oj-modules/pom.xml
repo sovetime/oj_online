@@ -21,6 +21,23 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>oj-common-core</artifactId>
+            <version>${oj-common-core.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>oj-common-swagger</artifactId>
+            <version>${oj-common-swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>oj-common-security</artifactId>
+            <version>${oj-common-secuity.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -3,6 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
+    <modules>
+        <module>oj-api</module>
+    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -20,6 +23,13 @@
         <spring-boot.version>3.0.1</spring-boot.version>
         <spring-cloud.version>2022.0.3</spring-cloud.version>
         <spring-cloud-alibaba.version>2022.0.0.0-RC2</spring-cloud-alibaba.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <oj-common-core.version>oj-demo-SNAPSHOT</oj-common-core.version>
+        <oj-common-swagger.version>oj-demo-SNAPSHOT</oj-common-swagger.version>
+        <oj-common-secuity.version>oj-demo-SNAPSHOT</oj-common-secuity.version>
+        <springdoc-openapi.version>2.2.0</springdoc-openapi.version>
+
+
     </properties>
 
 
@@ -29,6 +39,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
