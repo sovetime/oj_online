@@ -3,7 +3,9 @@ package org.example.ojsystem.domain.sysuser;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.example.common.core.domain.BaseEnity;
 
 /**
@@ -17,10 +19,12 @@ import org.example.common.core.domain.BaseEnity;
 public class SysUser extends BaseEnity {
     //使用雪花算法
     @TableId(type = IdType.ASSIGN_ID)
-    private Long id; //主键 不再使用auto_increment
+    private Long userId; //主键 不再使用auto_increment
 
     private String userAccount;
+
     private String password;
+
     private String nickName;
 
 }

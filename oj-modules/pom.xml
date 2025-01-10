@@ -37,7 +37,33 @@
             <artifactId>oj-common-security</artifactId>
             <version>${oj-common-secuity.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>oj-common-redis</artifactId>
+            <version>${oj-common-redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.22</version>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>oj-common-mybaits</artifactId>
+            <version>${oj-common-mybaits.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

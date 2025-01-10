@@ -13,8 +13,11 @@
         <module name="oj-system" />
         <module name="oj-common-core" />
         <module name="oj-api" />
+        <module name="oj-common-mybaits" />
         <module name="oj-job" />
         <module name="oj-common-security" />
+        <module name="oj-common-redis" />
+        <module name="oj-gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -27,10 +30,13 @@
       <module name="oj-api" options="-parameters" />
       <module name="oj-common" options="" />
       <module name="oj-common-core" options="-parameters" />
+      <module name="oj-common-mybaits" options="-parameters" />
+      <module name="oj-common-redis" options="-parameters" />
       <module name="oj-common-security" options="-parameters" />
       <module name="oj-common-swagger" options="-parameters" />
       <module name="oj-demo" options="" />
       <module name="oj-friend" options="-parameters" />
+      <module name="oj-gateway" options="-parameters" />
       <module name="oj-job" options="-parameters" />
       <module name="oj-judge" options="-parameters" />
       <module name="oj-modules" options="" />

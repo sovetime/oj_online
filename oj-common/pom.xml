@@ -12,6 +12,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>oj-common-security</module>
+        <module>oj-common-redis</module>
+        <module>oj-common-mybaits</module>
     </modules>
 
 

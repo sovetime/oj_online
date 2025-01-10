@@ -5,6 +5,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>oj-api</module>
+        <module>oj-gateway</module>
     </modules>
 
     <parent>
@@ -27,9 +28,13 @@
         <oj-common-core.version>oj-demo-SNAPSHOT</oj-common-core.version>
         <oj-common-swagger.version>oj-demo-SNAPSHOT</oj-common-swagger.version>
         <oj-common-secuity.version>oj-demo-SNAPSHOT</oj-common-secuity.version>
+        <oj-common-redis.version>oj-demo-SNAPSHOT</oj-common-redis.version>
+        <oj-common-mybaits.version>oj-demo-SNAPSHOT</oj-common-mybaits.version>
         <springdoc-openapi.version>2.2.0</springdoc-openapi.version>
-
-
+        <jjwt.version>0.9.1</jjwt.version>
+        <fastjson.version>2.0.43</fastjson.version>
+        <jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
+        <hutool-all.version>5.8.22</hutool-all.version>
     </properties>
 
 

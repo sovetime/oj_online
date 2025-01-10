@@ -1,6 +1,7 @@
 package org.example.ojsystem.domain.sysuser.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -13,6 +14,7 @@ import lombok.Data;
 public class SysUserSaveDTO {
     @Schema(description = "用户账号")
     private String userAccount;
+
     @Schema(description = "用户密码")
     private String password;
 }

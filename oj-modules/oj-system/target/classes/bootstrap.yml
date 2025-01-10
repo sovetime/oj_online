@@ -1,15 +1,15 @@
-server:
-  port: 8180
 
 spring:
   application:
     name: oj-system
-  datasource:
-    url: jdbc:mysql://119.23.53.45:3306/oj?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
-    username: time
-    password: Bill2279498816*
-    hikari: #线程池配置
-      minimum-idle: 5 # 最⼩空闲连接数
-      maximum-pool-size: 20 # 最⼤连接数
-      idle-timeout: 30000 # 空闲连接存活时间（毫秒）
-      connection-timeout: 30000 # 连接超时时间（毫秒）
+  profiles:
+    active: local
+  cloud:
+    nacos:
+      discovery:
+        namespace: 65788b48-06f1-4c5a-ae4d-1710eff55249
+        server-addr: http://127.0.0.1:8848
+      config:
+        namespace: 65788b48-06f1-4c5a-ae4d-1710eff55249
+        server-addr: http://127.0.0.1:8848
+        file-extension: yaml

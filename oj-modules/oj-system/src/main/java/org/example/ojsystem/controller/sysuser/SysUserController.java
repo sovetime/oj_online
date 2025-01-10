@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.common.core.constants.HttpConstants;
+import org.example.common.core.controller.BaseController;
 import org.example.common.core.domain.R;
 import org.example.ojsystem.controller.LoginResult;
 import org.example.ojsystem.domain.sysuser.SysUser;
@@ -29,10 +30,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/sysUser")
 @RestController
 @Tag(name="管理员接口")
-public class SysUserController {
+public class SysUserController extends BaseController {
     @Autowired
     private SysUserServiceImpl sysUserService;
 
+    //登录接口
     @PostMapping("/login") //安全性考虑PostMapper
     @Operation(summary = "管理员登录",description = "根据密码进行登录")
     @ApiResponse(responseCode = "1000",description = "操作成功")
@@ -40,23 +42,20 @@ public class SysUserController {
     @ApiResponse(responseCode = "3102", description = "用户不存在")
     @ApiResponse(responseCode = "3103", description = "用户名或密码错误")
     //返回值，登录成功还是失败,如果失败了说明失败原因
-    public R<Void> login(@RequestBody LoginDTO loginDTO){
+    public R<String> login(@RequestBody LoginDTO loginDTO){
         return sysUserService.login(loginDTO.getUserAccount(), loginDTO.getPassword());
     }
 
 
-
-
-
-//    //开发部分
-//    @PostMapping("/add")
-//    @Operation(summary = "新增管理员",description = "根据提供的信息新增管理员")
-//    @ApiResponse(responseCode = "1000",description = "操作成功")
-//    @ApiResponse(responseCode = "3101", description = "用户已存在")
-//    @ApiResponse(responseCode = "2000", description = "服务繁忙请稍后重试")
-//    public R<Void> add(@RequestBody SysUserSaveDTO sysUserSaveDTO){
-//        return sysUserService.add(sysUserSaveDTO.getUserAccount(),sysUserSaveDTO.getPassword());
-//    }
+    //添加管理员
+    @PostMapping("/add")
+    @Operation(summary = "新增管理员",description = "根据提供的信息新增管理员")
+    @ApiResponse(responseCode = "1000",description = "操作成功")
+    @ApiResponse(responseCode = "3101", description = "用户已存在")
+    @ApiResponse(responseCode = "2000", description = "服务繁忙请稍后重试")
+    public R<Void> add(@RequestBody SysUserSaveDTO sysUserSaveDTO){
+        return toR(sysUserService.add(sysUserSaveDTO));
+    }
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "删除用户", description = "通过用户id删除用户")
