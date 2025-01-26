@@ -54,16 +54,4 @@ public class JwtUtils {
         return value.toString();
     }
 
-    public static void main(String[] args) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userpassword", 123456);
-        //secret  保密 随机 不能硬编码  定期更换
-        System.out.println(createToken(claims, "zxcvbnmasdfghjuiyreqtuiwq"));
-        //String token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOjEyMzQ1Njc4OX0.rgVT9HXxyzwEPq4c_2gznBlrJ0NIC1wkJZzYml6dddZxVFP0ELAMQRT-o8LcrEIFESHKEuMIfUjhBBvq12ucqw";
-
-        //seret是密钥,这里随便打几个
-        //Claims claim = parseToken(token, "zxcvbnmasdfghjuiyreqtuiwq");
-        //System.out.println(claim);
-
-    }
 }

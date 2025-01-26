@@ -21,6 +21,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>oj-common-elsticsearch</artifactId>
+            <version>${oj-common-elsticsearch.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>

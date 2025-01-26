@@ -35,6 +35,8 @@ public class TokenService {
     public String createToken(Long userId, String secret, Integer identity, String nickName, String headImage) {
         //密码校验成功后，生成jwt token
         Map<String, Object> claims=new HashMap<>();
+        //这里使用UUID生成userKey会导致redis/缓存大量的key堆积，浪费资源
+        //因为每次的userKey都是需要重新生成的，不是相同的，这作为后面一个优化点
         String userKey = UUID.fastUUID().toString();
         claims.put(LOGIN_USER_ID, userId);
         claims.put(LOGIN_USER_KEY,userKey);
@@ -53,41 +55,59 @@ public class TokenService {
         loginUser.setHeadImage(headImage);
         //记录jwt的过期时间，这里设置两天
         redisService.setCacheObject(tokenKey,loginUser,EXPIRATION, TimeUnit.MINUTES);
-
         return token;
     }
 
     //延长token的有效时间，延长redis当中从存储的用于用户身份认证的敏感信息的有效时间
     //在身份认证通过之后才会调用的，并且在请求到达controller层之前  在拦截器中调用
     public void extendToken(Claims claims) {
-        String userKey=getUserKey(claims);
+        String userKey=getUserKey(claims);//获取jwt中的key
         if(userKey==null){
             return;
         }
         String tokenKey=getTokenKey(userKey);
 
-        //获取jwt令牌剩余的有效时间
+        //获取缓存中key的剩余时间
         Long expire=redisService.getExpire(tokenKey,TimeUnit.MINUTES);
         //剩余时间小于REFRESH_TIME的时候进行时间更新
         if (expire != null && expire < CacheConstants.REFRESH_TIME) {
             redisService.expire(tokenKey, CacheConstants.EXPIRATION, TimeUnit.MINUTES);
         }
     }
-
     public String getUserKey(Claims claims) {
         if (claims == null) {
             return null;
         }
         return JwtUtils.getUserKey(claims);  //获取jwt中的key
     }
+
+    //根据tokenkey获取缓存中的用户信息
+    public LoginUser getLoginUser(String token,String secret) {
+        String userKey = getUserKey(token, secret);//获取jwt中的key
+        if (userKey == null) {
+            return null;
+        }
+        return redisService.getCacheObject(getTokenKey(userKey), LoginUser.class);
+    }
+
+    //删除redis中存储的token
+    public boolean deleteLoginUser(String token, String secret) {
+        String userKey = getUserKey(token, secret);//获取jwt中存储的key
+        if(userKey==null){
+            return false;
+        }
+        return redisService.deleteObject(getTokenKey(userKey));
+    }
+
+    //获取jwt中的key
     private String getUserKey(String token, String secret) {
         Claims claims = getClaims(token, secret);
         if (claims == null) {
             return null;
         }
-        return JwtUtils.getUserKey(claims);  //获取jwt中的key
+        return JwtUtils.getUserKey(claims);
     }
-
+    //获取Claims中存储的信息
     public Claims getClaims(String token, String secret) {
         Claims claims;
         try {
@@ -103,6 +123,16 @@ public class TokenService {
         return claims;
     }
 
+    //更新用户登录信息
+    public void refreshLoginUser(String nickName, String headImage, String userKey) {
+        String tokenKey = getTokenKey(userKey);
+        LoginUser loginUser = redisService.getCacheObject(tokenKey, LoginUser.class);
+        loginUser.setNickName(nickName);
+        loginUser.setHeadImage(headImage);
+        redisService.setCacheObject(tokenKey, loginUser);
+    }
+
+    //获取token中存储的key
     public String getTokenKey(String userKey) {
         return LOGIN_TOKEN_KEY+userKey;
     }
@@ -110,4 +140,6 @@ public class TokenService {
     public Long getUserId(Claims claims) {
         return claims.get(LOGIN_USER_ID, Long.class);
     }
+
+
 }

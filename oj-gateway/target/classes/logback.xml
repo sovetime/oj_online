@@ -41,8 +41,8 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
             <fileNamePattern>${log.path}/error.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 日志最大的历史 10天 -->
-            <maxHistory>10</maxHistory>
+            <!-- 日志最大的历史 3天 -->
+            <maxHistory>3</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>

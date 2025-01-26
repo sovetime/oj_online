@@ -14,6 +14,9 @@
         <module>oj-common-security</module>
         <module>oj-common-redis</module>
         <module>oj-common-mybaits</module>
+        <module>oj-common-elsticsearch</module>
+        <module>oj-common-message</module>
+        <module>oj-common-file</module>
     </modules>
 
 

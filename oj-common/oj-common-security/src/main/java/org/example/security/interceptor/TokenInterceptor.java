@@ -4,10 +4,11 @@ import cn.hutool.core.util.StrUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.common.core.constants.Constants;
 import org.example.common.core.constants.HttpConstants;
+import org.example.common.core.utils.ThreadLocalUtil;
 import org.example.security.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -31,15 +32,18 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = getToken(request);  //请求头中获取token
-//        if (StrUtil.isEmpty(token)) {
-//            return true;
-//        }
-//        Claims claims = tokenService.getClaims(token, secret);
-//        Long userId = tokenService.getUserId(claims);
-//        String userKey = tokenService.getUserKey(claims);
-//        ThreadLocalUtil.set(Constants.USER_ID, userId);
-//        ThreadLocalUtil.set(Constants.USER_KEY, userKey);
-//        tokenService.extendToken(claims);
+        if (StrUtil.isEmpty(token)) {
+            return true;
+        }
+        Claims claims = tokenService.getClaims(token, secret);
+
+        //将token中的信息存储到ThreadLocal中
+        Long userId = tokenService.getUserId(claims);
+        String userKey = tokenService.getUserKey(claims);
+        ThreadLocalUtil.set(Constants.USER_ID, userId);
+        ThreadLocalUtil.set(Constants.USER_KEY, userKey);
+
+        tokenService.extendToken(claims);
         return true;
     }
 

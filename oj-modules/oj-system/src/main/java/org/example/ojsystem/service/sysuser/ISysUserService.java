@@ -1,8 +1,8 @@
-package org.example.ojsystem.service;
+package org.example.ojsystem.service.sysuser;
 
 import org.example.common.core.domain.R;
+import org.example.common.core.domain.vo.LoginUserVO;
 import org.example.ojsystem.domain.sysuser.dto.SysUserSaveDTO;
-import org.springframework.stereotype.Service;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +16,8 @@ public interface ISysUserService {
     R<String> login(String userAcount, String password);
 
     int add(SysUserSaveDTO sysUserSaveDTO);
+
+    R<LoginUserVO> info(String token);
 
     boolean logout(String token);
 

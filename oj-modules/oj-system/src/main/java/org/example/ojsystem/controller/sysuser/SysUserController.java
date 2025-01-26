@@ -5,19 +5,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.common.core.constants.HttpConstants;
 import org.example.common.core.controller.BaseController;
 import org.example.common.core.domain.R;
-import org.example.ojsystem.controller.LoginResult;
-import org.example.ojsystem.domain.sysuser.SysUser;
 import org.example.ojsystem.domain.sysuser.dto.LoginDTO;
 import org.example.ojsystem.domain.sysuser.dto.SysUserSaveDTO;
+import org.example.common.core.domain.vo.LoginUserVO;
 import org.example.ojsystem.domain.sysuser.vo.SysUserVO;
-import org.example.ojsystem.service.impl.SysUserServiceImpl;
+import org.example.ojsystem.service.sysuser.impl.SysUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,7 +31,6 @@ public class SysUserController extends BaseController {
     @Autowired
     private SysUserServiceImpl sysUserService;
 
-    //登录接口
     @PostMapping("/login") //安全性考虑PostMapper
     @Operation(summary = "管理员登录",description = "根据密码进行登录")
     @ApiResponse(responseCode = "1000",description = "操作成功")
@@ -46,8 +42,16 @@ public class SysUserController extends BaseController {
         return sysUserService.login(loginDTO.getUserAccount(), loginDTO.getPassword());
     }
 
+    @GetMapping("/info")
+    public R<LoginUserVO> info(@RequestHeader(HttpConstants.AUTHENTICATION) String token){
+        return sysUserService.info(token);
+    }
 
-    //添加管理员
+    @DeleteMapping("/logout")
+    public R<Void> logout(@RequestHeader(HttpConstants.AUTHENTICATION) String token){
+        return toR(sysUserService.logout(token));
+    }
+
     @PostMapping("/add")
     @Operation(summary = "新增管理员",description = "根据提供的信息新增管理员")
     @ApiResponse(responseCode = "1000",description = "操作成功")

@@ -1,14 +1,18 @@
-package org.example.ojsystem.service.impl;
+package org.example.ojsystem.service.sysuser.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.example.common.core.constants.HttpConstants;
+import org.example.common.core.domain.LoginUser;
 import org.example.common.core.domain.R;
+import org.example.common.core.domain.vo.LoginUserVO;
 import org.example.common.core.enums.ResultCode;
 import org.example.common.core.enums.UserIdentity;
 import org.example.ojsystem.domain.sysuser.SysUser;
 import org.example.ojsystem.domain.sysuser.dto.SysUserSaveDTO;
-import org.example.ojsystem.mapper.SysUserMapper;
-import org.example.ojsystem.service.ISysUserService;
+import org.example.ojsystem.mapper.sysuser.SysUserMapper;
+import org.example.ojsystem.service.sysuser.ISysUserService;
 import org.example.ojsystem.utils.BCryptUtils;
 import org.example.security.exception.ServiceException;
 import org.example.security.service.TokenService;
@@ -17,9 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 
 /**
@@ -47,7 +49,7 @@ public class SysUserServiceImpl implements ISysUserService {
         LambdaQueryWrapper<SysUser> queryWrapper=new LambdaQueryWrapper<>();
         //select password from tb_sys_user where user_account = #{userAccount}
         SysUser sysUser=sysUserMapper.selectOne(queryWrapper
-                .select(SysUser::getPassword).eq(SysUser::getUserAccount, userAccount));
+                .select(SysUser::getNickName,SysUser::getPassword).eq(SysUser::getUserAccount, userAccount));
 
         //登录校验
         if(sysUser==null){
@@ -77,14 +79,30 @@ public class SysUserServiceImpl implements ISysUserService {
         return sysUserMapper.insert(sysUser);
     }
 
+    @Override
+    public R<LoginUserVO> info(String token) {
+        //检测token是否是有效的，且开头是HttpConstants.PREFIX
+        if (StrUtil.isNotEmpty(token) && token.startsWith(HttpConstants.PREFIX)) {
+            //移除HttpConstants.PREFIX 前缀
+            token = token.replaceFirst(HttpConstants.PREFIX, StrUtil.EMPTY);
+        }
+
+        LoginUser loginUser = tokenService.getLoginUser(token, secret);
+        if (loginUser == null) {
+            return R.fail();
+        }
+        LoginUserVO loginUserVO = new LoginUserVO();
+        loginUserVO.setNickName(loginUser.getNickName());
+        return R.ok(loginUserVO);
+    }
 
     @Override
     public boolean logout(String token) {
-        return false;
+        if (StrUtil.isNotEmpty(token) && token.startsWith(HttpConstants.PREFIX)) {
+            token = token.replaceFirst(HttpConstants.PREFIX, StrUtil.EMPTY);
+        }
+        return tokenService.deleteLoginUser(token, secret);
     }
-
-
-
 
 }
 

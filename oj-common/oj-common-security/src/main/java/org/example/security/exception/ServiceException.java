@@ -14,5 +14,4 @@ import org.example.common.core.enums.ResultCode;
 @AllArgsConstructor
 public class ServiceException extends RuntimeException {
     private ResultCode resultCode;
-
 }

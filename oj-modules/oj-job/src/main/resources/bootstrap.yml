@@ -1,6 +1,15 @@
-server:
-  port: 8183
-
 spring:
   application:
-    name: oj-obj
+    name: oj-job
+  profiles:
+    active: local
+  cloud:
+    nacos:
+      discovery:
+        namespace: 65788b48-06f1-4c5a-ae4d-1710eff55249
+        server-addr: http://127.0.0.1:8848
+        username: nacos
+      config:
+        namespace: 65788b48-06f1-4c5a-ae4d-1710eff55249
+        server-addr: http://127.0.0.1:8848
+        file-extension: yaml

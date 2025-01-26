@@ -101,7 +101,6 @@ public class RedisService {
 
     /**
      * 获得缓存的基本对象。
-     *
      * @param key 缓存键值
      * @return 缓存键值对应的数据
      */
@@ -126,13 +125,13 @@ public class RedisService {
         return result;
     }
 
+    //将传入的map中的所有键值对批量设置到 Redis 中
     public <K, V> void multiSet(Map<? extends K, ? extends V> map) {
         redisTemplate.opsForValue().multiSet(map);
     }
 
     /**
      * 计数加一
-     *
      * @param key
      * @return
      */

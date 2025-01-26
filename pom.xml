@@ -26,11 +26,20 @@
         <spring-cloud-alibaba.version>2022.0.0.0-RC2</spring-cloud-alibaba.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <oj-common-core.version>oj-demo-SNAPSHOT</oj-common-core.version>
+        <oj-common-elsticsearch.version>oj-demo-SNAPSHOT</oj-common-elsticsearch.version>
         <oj-common-swagger.version>oj-demo-SNAPSHOT</oj-common-swagger.version>
+        <oj-common-message.version>oj-demo-SNAPSHOT</oj-common-message.version>
         <oj-common-secuity.version>oj-demo-SNAPSHOT</oj-common-secuity.version>
         <oj-common-redis.version>oj-demo-SNAPSHOT</oj-common-redis.version>
         <oj-common-mybaits.version>oj-demo-SNAPSHOT</oj-common-mybaits.version>
+        <org-glassfish-jaxb.version>2.3.3</org-glassfish-jaxb.version>
+        <javax-xml-bind.version>2.3.1</javax-xml-bind.version>
+        <javax-activation.version>1.1.1</javax-activation.version>
+        <aliyun-oss.version>3.17.4</aliyun-oss.version>
+        <transmittable-thread-local.version>2.14.4</transmittable-thread-local.version>
+        <pagehelper.boot.version>2.0.0</pagehelper.boot.version>
         <springdoc-openapi.version>2.2.0</springdoc-openapi.version>
+        <xxl-job-core.version>2.4.0</xxl-job-core.version>
         <jjwt.version>0.9.1</jjwt.version>
         <fastjson.version>2.0.43</fastjson.version>
         <jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
