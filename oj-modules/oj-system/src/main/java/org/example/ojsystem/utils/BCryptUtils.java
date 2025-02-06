@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * Time: 23:04
  */
 public class BCryptUtils {
+
     /**
      * 生成加密后密文
      * @param password 密码

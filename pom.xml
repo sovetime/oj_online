@@ -32,6 +32,8 @@
         <oj-common-secuity.version>oj-demo-SNAPSHOT</oj-common-secuity.version>
         <oj-common-redis.version>oj-demo-SNAPSHOT</oj-common-redis.version>
         <oj-common-mybaits.version>oj-demo-SNAPSHOT</oj-common-mybaits.version>
+        <oj-api.version>oj-demo-SNAPSHOT</oj-api.version>
+        <oj-common-rabbitmq.version>oj-demo-SNAPSHOT</oj-common-rabbitmq.version>
         <org-glassfish-jaxb.version>2.3.3</org-glassfish-jaxb.version>
         <javax-xml-bind.version>2.3.1</javax-xml-bind.version>
         <javax-activation.version>1.1.1</javax-activation.version>

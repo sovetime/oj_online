@@ -1,0 +1,2 @@
+org.example.message.service.AliSmsService
+org.example.message.config.AliSmsConfig

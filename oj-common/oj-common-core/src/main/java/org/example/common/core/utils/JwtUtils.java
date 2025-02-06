@@ -29,7 +29,6 @@ public class JwtUtils {
 
     /**
      * 从令牌中获取数据
-     *
      * @param token  令牌
      * @param secret 密钥
      * @return 数据

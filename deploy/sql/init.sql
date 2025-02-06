@@ -121,6 +121,7 @@ create table tb_user_submit(
         pass            tinyint NOT NULL COMMENT '0：未通过  1：通过',
         exe_message     varchar(500) NOT NULL COMMENT '执行结果',
         score           int NOT NULL DEFAULT '0' COMMENT '得分',
+        case_judge_res  varchar(1000) COMMENT '用例输出结果',
 
         create_by       bigint unsigned not null  comment '创建人',
         create_time     datetime not null comment '创建时间',

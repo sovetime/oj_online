@@ -49,7 +49,8 @@ public class SysUserServiceImpl implements ISysUserService {
         LambdaQueryWrapper<SysUser> queryWrapper=new LambdaQueryWrapper<>();
         //select password from tb_sys_user where user_account = #{userAccount}
         SysUser sysUser=sysUserMapper.selectOne(queryWrapper
-                .select(SysUser::getNickName,SysUser::getPassword).eq(SysUser::getUserAccount, userAccount));
+                .select(SysUser::getUserId,SysUser::getNickName,SysUser::getPassword)
+                .eq(SysUser::getUserAccount, userAccount));
 
         //登录校验
         if(sysUser==null){

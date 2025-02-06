@@ -12,6 +12,7 @@ import org.example.common.core.domain.R;
 import org.example.common.core.enums.ResultCode;
 import org.example.common.core.enums.UserIdentity;
 import org.example.common.core.utils.JwtUtils;
+import org.example.common.core.utils.ThreadLocalUtil;
 import org.example.getway.properties.IgnoreWhiteProperties;
 import org.example.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static org.example.common.core.constants.Constants.USER_ID;
+
 /**
  * 网关鉴权
  */
@@ -43,12 +46,12 @@ public class AuthFilter implements GlobalFilter, Ordered {
     // 排除过滤的 uri 白名单地址，在nacos自行添加
     @Autowired
     private IgnoreWhiteProperties ignoreWhite;
+    @Autowired
+    private RedisService redisService;
 
     @Value("${jwt.secret}")
     private String secret;
 
-    @Autowired
-    private RedisService redisService;
 
     //过滤不符合条件的接口地址
     @Override
@@ -85,8 +88,11 @@ public class AuthFilter implements GlobalFilter, Ordered {
         if (!isLogin) {
             return unauthorizedResponse(exchange, "登录状态已过期");
         }
-        String userId = JwtUtils.getUserId(claims);  //判断jwt中的信息是否完整
+
+        String userId = JwtUtils.getUserId(claims);  // 判断jwt中的信息是否完整
         if (StrUtil.isEmpty(userId)) {
+            // 添加日志记录，以便调试
+            log.error("JWT claims 中未找到 userId: {}", claims);
             return unauthorizedResponse(exchange, "令牌验证失败");
         }
 
@@ -139,16 +145,12 @@ public class AuthFilter implements GlobalFilter, Ordered {
         return matcher.match(pattern, url);
     }
 
-    /**
-     * 获取缓存key
-     */
+    //获取缓存key
     private String getTokenKey(String token) {
         return CacheConstants.LOGIN_TOKEN_KEY + token;
     }
 
-    /**
-     * 从请求头中获取请求token
-     */
+    //从请求头中获取请求token
     private String getToken(ServerHttpRequest request) {
         //AUTHENTICATION-"Authorization"是HTTP请求中用于存放身份请求凭据的
         String token = request.getHeaders().getFirst(HttpConstants.AUTHENTICATION);
