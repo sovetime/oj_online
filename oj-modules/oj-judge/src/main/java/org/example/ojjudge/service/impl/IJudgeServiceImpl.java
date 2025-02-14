@@ -42,7 +42,7 @@ public class IJudgeServiceImpl implements IJudgeService {
     @Override
     public UserQuestionResultVO doJudgeJavaCode(JudgeSubmitDTO judgeSubmitDTO) {
         log.info("---- 判题逻辑开始 -------");
-        //执行代码
+        //编译并执行代码
         SandBoxExecuteResult sandBoxExecuteResult = sandboxPoolService.exeJavaCode
                 (judgeSubmitDTO.getUserId(), judgeSubmitDTO.getUserCode(), judgeSubmitDTO.getInputList());
 

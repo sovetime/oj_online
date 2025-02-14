@@ -5,6 +5,8 @@ spring:
     active: local
   cloud:
     nacos:
+      username: nacos
+      password: nacos
       discovery:
         namespace: 65788b48-06f1-4c5a-ae4d-1710eff55249
         server-addr: http://127.0.0.1:8848

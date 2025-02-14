@@ -37,6 +37,7 @@ public class UserQuestionController extends BaseController {
     }
 
     @GetMapping("/exe/result")
+    @Operation(summary = "用户提交结果获取")
     public  R<UserQuestionResultVO> exeResult(Long examId, Long questionId, String currentTime) {
         return R.ok(userQuestionService.exeResult(examId, questionId, currentTime));
     }

@@ -31,6 +31,7 @@ public class QuestionController extends BaseController {
     }
 
     @GetMapping("/semiLogin/hotList")
+    @Operation(summary = "获取热门题目列表")
     public R<List<QuestionVO>> hotList() {
         return R.ok(questionService.hotList());
     }

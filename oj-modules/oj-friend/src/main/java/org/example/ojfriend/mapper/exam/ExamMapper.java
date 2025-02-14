@@ -13,6 +13,7 @@ import java.util.List;
  * Date: 2025-01-21
  * Time: 13:18
  */
+
 public interface ExamMapper extends BaseMapper<Exam> {
     List<ExamVO> selectExamList(ExamQueryDTO examQueryDTO);
 }

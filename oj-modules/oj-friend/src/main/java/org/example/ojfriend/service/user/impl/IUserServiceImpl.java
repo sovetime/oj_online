@@ -3,6 +3,7 @@ package org.example.ojfriend.service.user.impl;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.common.core.constants.CacheConstants;
 import org.example.common.core.constants.Constants;
 import org.example.common.core.constants.HttpConstants;

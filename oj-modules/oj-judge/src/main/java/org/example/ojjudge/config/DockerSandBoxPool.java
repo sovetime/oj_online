@@ -24,9 +24,9 @@ public class DockerSandBoxPool {
     private String volumeDir;
     private Long memoryLimit;
     private Long memorySwapLimit;
-    private Long cpuLimit;//cpu限制
+    private Long cpuLimit;
     private int poolSize;
-    private String containerNamePrefix;//容器名称前缀
+    private String containerNamePrefix;
     private BlockingQueue<String> containerQueue;//容器队列
     private Map<String, String> containerNameMap;//容器名称映射
 
@@ -72,6 +72,7 @@ public class DockerSandBoxPool {
 
     //创建容器
     private void createContainer(String containerName) {
+        //判断容器是否存在
         List<Container> containerList = dockerClient.listContainersCmd().withShowAll(true).exec();
         if (!CollectionUtil.isEmpty(containerList)) {
             String names = JudgeConstants.JAVA_CONTAINER_PREFIX + containerName;
@@ -91,7 +92,7 @@ public class DockerSandBoxPool {
 
         //拉取镜像
         pullJavaEnvImage();
-        //创建容器  限制资源   控制权限
+        //创建容器,限制资源,控制权限
         HostConfig hostConfig = getHostConfig(containerName);
         CreateContainerCmd containerCmd = dockerClient
                 .createContainerCmd(JudgeConstants.JAVA_ENV_IMAGE)
@@ -110,6 +111,7 @@ public class DockerSandBoxPool {
         containerNameMap.put(containerId, containerName);
     }
 
+    //拉取镜像
     private void pullJavaEnvImage() {
         ListImagesCmd listImagesCmd = dockerClient.listImagesCmd();
         List<Image> imageList = listImagesCmd.exec();
@@ -142,19 +144,22 @@ public class DockerSandBoxPool {
         return hostConfig;
     }
 
+    //获取存放用户提交代码的目录
     public String getCodeDir(String containerId) {
         String containerName = containerNameMap.get(containerId);
         log.info("containerName：{}", containerName);
         return System.getProperty("user.dir") + File.separator + JudgeConstants.CODE_DIR_POOL + File.separator + containerName;
     }
 
-    //为每个容器，创建的指定挂载文件
+    //为每个容器创建一个指定的挂载文件目录，如果目录不存在则创建
     private String createContainerDir(String containerName) {
-        //一级目录  存放所有容器的挂载目录
+        // 获取当前项目的根目录路径，并拼接上代码目录池的路径
         String codeDir = System.getProperty("user.dir") + File.separator + JudgeConstants.CODE_DIR_POOL;
+        // 检查代码目录池是否存在，如果不存在则创建
         if (!FileUtil.exist(codeDir)) {
             FileUtil.mkdir(codeDir);
         }
         return codeDir + File.separator + containerName;
     }
+
 }

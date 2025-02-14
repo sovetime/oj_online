@@ -12,21 +12,21 @@ import org.springframework.context.annotation.Configuration;
 public class DockerSandBoxPoolConfig {
 
     @Value("${sandbox.docker.host:tcp://localhost:2375}")
-    private String dockerHost;
+    private String dockerHost;//主机地址
     @Value("${sandbox.docker.image:openjdk:8-jdk-alpine}")
-    private String sandboxImage;
+    private String sandboxImage;//镜像名称
     @Value("${sandbox.docker.volume:/usr/share/java}")
-    private String volumeDir;
+    private String volumeDir;//容器卷目录
     @Value("${sandbox.limit.memory:100000000}")
-    private Long memoryLimit;
+    private Long memoryLimit;//内存上限
     @Value("${sandbox.limit.memory-swap:100000000}")
-    private Long memorySwapLimit;
+    private Long memorySwapLimit;//内存和空间上限
     @Value("${sandbox.limit.cpu:1}")
-    private Long cpuLimit;
+    private Long cpuLimit;//CPU限制
     @Value("${sandbox.docker.pool.size:4}")
-    private int poolSize;
+    private int poolSize;//池大小
     @Value("${sandbox.docker.name-prefix:oj-sandbox-jdk}")
-    private String containerNamePrefix;
+    private String containerNamePrefix;//容器名称前缀
 
     /**
      * 创建DockerClient实例
@@ -69,7 +69,6 @@ public class DockerSandBoxPoolConfig {
 
         // 调用初始化方法来设置Docker池，准备资源分配
         dockerSandBoxPool.initDockerPool();
-
         // 返回配置好的Docker沙箱池实例
         return dockerSandBoxPool;
     }

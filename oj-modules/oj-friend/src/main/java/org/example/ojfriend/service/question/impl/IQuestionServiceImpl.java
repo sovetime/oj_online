@@ -4,7 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.example.common.core.constants.Constants;
 import org.example.common.core.domain.TableDataInfo;
 import org.example.common.core.enums.ResultCode;
 import org.example.ojfriend.domain.question.Question;
@@ -16,6 +18,7 @@ import org.example.ojfriend.elasticsearch.QuestionRepository;
 import org.example.ojfriend.manager.QuestionCacheManager;
 import org.example.ojfriend.mapper.question.QuestionMapper;
 import org.example.ojfriend.mapper.user.UserExamMapper;
+import org.example.ojfriend.mapper.user.UserSubmitMapper;
 import org.example.ojfriend.service.question.IQuestionService;
 import org.example.security.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -45,7 +49,8 @@ public class IQuestionServiceImpl implements IQuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private QuestionCacheManager questionCacheManager;
-
+    @Autowired
+    private UserSubmitMapper userSubmitMapper;
 
     @Override
      public TableDataInfo list(QuestionQueryDTO questionQueryDTO) {
@@ -94,8 +99,19 @@ public class IQuestionServiceImpl implements IQuestionService {
     @Override
     public List<QuestionVO> hotList() {
         Long total = questionCacheManager.getHostListSize();
+        List<Long> hotQuestionIdList;
 
-        return List.of();
+        if (total == null || total <= 0) {
+            PageHelper.startPage(Constants.HOST_QUESTION_LIST_START, Constants.HOST_QUESTION_LIST_END);
+            //查询热门题目，统计用户提交信息中questionid次数
+            hotQuestionIdList = userSubmitMapper.selectHostQuestionList();
+            questionCacheManager.refreshHotQuestionList(hotQuestionIdList);
+        } else {
+            hotQuestionIdList = questionCacheManager.getHostList();
+        }
+
+        //获取题目名称，设置热榜题目列表
+        return assembleQuestionVOList(hotQuestionIdList);
     }
 
     @Override
@@ -147,5 +163,20 @@ public class IQuestionServiceImpl implements IQuestionService {
         List<QuestionES> questionESList = BeanUtil.copyToList(questionList, QuestionES.class);
         //保存到ES
         questionRepository.saveAll(questionESList);
+    }
+
+    private List<QuestionVO> assembleQuestionVOList(List<Long> hotQuestionIdList) {
+        if (CollectionUtil.isEmpty(hotQuestionIdList)) {
+            return new ArrayList<>();
+        }
+
+        List<QuestionVO> resultList = new ArrayList<>();
+        for (Long questionId : hotQuestionIdList) {
+            QuestionVO questionVO = new QuestionVO();
+            QuestionDetailVO detail = detail(questionId);
+            questionVO.setTitle(detail.getTitle());
+            resultList.add(questionVO);
+        }
+        return resultList;
     }
 }

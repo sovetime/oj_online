@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class SandboxServiceImpl implements ISandboxService {
 
+    //@Value("${sandbox.docker.host:tcp://119.23.53.45:2375}")
     @Value("${sandbox.docker.host:tcp://localhost:2375}")
     private String dockerHost;
     @Value("${sandbox.limit.memory:100000000}")
@@ -214,6 +215,7 @@ public class SandboxServiceImpl implements ISandboxService {
                 dockerClient.execStartCmd(cmdId)//执行命令
                         .exec(resultCallback)//执行回调
                         .awaitCompletion(timeLimit, TimeUnit.SECONDS);//设置超时时间
+                log.info("回调结果: {}", resultCallback.getMessage());
                 if (CodeRunStatus.FAILED.equals(resultCallback.getCodeRunStatus())) {
                     //未通过所有用例返回结果
                     return SandBoxExecuteResult.fail(CodeRunStatus.NOT_ALL_PASSED);
@@ -244,7 +246,7 @@ public class SandboxServiceImpl implements ISandboxService {
         // 检查输入参数是否为空
         if (!StrUtil.isEmpty(inputArgs)) {
             // 当入参不为空时拼接入参
-            String[] inputArray = inputArgs.split(" "); // 入参
+            String[] inputArray = inputArgs.split(" ");
             javaCmdArr = ArrayUtil.append(JudgeConstants.DOCKER_JAVA_EXEC_CMD, inputArray);
         }
         // 在指定容器中创建执行命令

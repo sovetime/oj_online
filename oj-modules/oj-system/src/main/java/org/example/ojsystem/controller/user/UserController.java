@@ -1,5 +1,6 @@
 package org.example.ojsystem.controller.user;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.example.common.core.controller.BaseController;
 import org.example.common.core.domain.R;
 import org.example.common.core.domain.TableDataInfo;
@@ -28,7 +29,7 @@ public class UserController extends BaseController {
     }
 
     @PutMapping("/updateStatus")
-    // 拉黑：限制用户操作   解禁：放开对于用户限制
+    @Operation(summary = "更改用户状态")
     public R<Void> updateStatus(@RequestBody UserDTO userDTO){
         return toR(userService.updateStatus(userDTO));
     }

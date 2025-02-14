@@ -19,7 +19,6 @@ public class RedisService {
     @Autowired
     public RedisTemplate redisTemplate;
 
-    //************************ 操作key ***************************
 
     /**
      * 判断 key是否存在
@@ -66,11 +65,8 @@ public class RedisService {
         return redisTemplate.getExpire(key, unit);
     }
 
-    /**
-     * 删除单个对象
-     *
-     * @param key
-     */
+
+    //删除单个对象
     public boolean deleteObject(final String key) {
         return redisTemplate.delete(key);
     }
@@ -130,37 +126,21 @@ public class RedisService {
         redisTemplate.opsForValue().multiSet(map);
     }
 
-    /**
-     * 计数加一
-     * @param key
-     * @return
-     */
+
+    //计数加一
     public Long increment(final String key) {
         return redisTemplate.opsForValue().increment(key);
     }
 
-    //*************** 操作list结构 ****************
 
-    /**
-     * 获取list中存储数据数量
-     *
-     * @param key
-     * @return
-     */
+
+    // 获取list中存储数据数量
     public Long getListSize(final String key) {
         return redisTemplate.opsForList().size(key);
     }
 
-    /**
-     * 获取list中指定范围数据
-     *
-     * @param key
-     * @param start
-     * @param end
-     * @param clazz
-     * @param <T>
-     * @return
-     */
+
+    //获取list中指定范围数据
     public <T> List<T> getCacheListByRange(final String key, long start, long end, Class<T> clazz) {
         List range = redisTemplate.opsForList().range(key, start, end);
         if (CollectionUtils.isEmpty(range)) {

@@ -7,12 +7,18 @@ import lombok.Setter;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 @Setter
+// 这个类实现了 ResultCallback 接口，用于处理 Docker容器的统计信息
 public class StatisticsCallback implements ResultCallback<Statistics> {
 
-    private Long maxMemory = 0L;
+    private Long maxMemory = 0L;//最大内存使用量
+    private final CountDownLatch latch = new CountDownLatch(1);
+    private volatile boolean isRunning = false;
+
 
     @Override
     //这个方法在开始接收统计信息时会被调用
@@ -26,10 +32,19 @@ public class StatisticsCallback implements ResultCallback<Statistics> {
     @Override
     public void onNext(Statistics statistics) {
         Long usage = statistics.getMemoryStats().getMaxUsage();//程序运行到某个时间点上的内存使用的最大值
-        if (usage != null) {
+        if (usage != null&&usage>0) {
             maxMemory = Math.max(usage, maxMemory);
+            if(!isRunning){
+                isRunning=true;
+                latch.countDown();
+            }
         }
     }
+
+    public void await(long timeout, TimeUnit unit) throws InterruptedException {
+        latch.await(timeout, unit);
+    }
+
 
     //这个方法在获取统计信息过程中遇到错误时会被调用
     @Override

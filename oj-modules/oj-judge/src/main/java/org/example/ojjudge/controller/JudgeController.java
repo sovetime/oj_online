@@ -1,5 +1,6 @@
 package org.example.ojjudge.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.example.api.domain.dto.JudgeSubmitDTO;
 import org.example.api.domain.vo.UserQuestionResultVO;
 import org.example.common.core.controller.BaseController;
@@ -25,6 +26,7 @@ public class JudgeController extends BaseController {
     private IJudgeService iJudgeService;
 
     @PostMapping("/doJudgeJavaCode")
+    @Operation(summary = "判题代码实现")
     public R<UserQuestionResultVO> doJudgeJavaCode(@RequestBody JudgeSubmitDTO judgeSubmitDTO) {
         return R.ok(iJudgeService.doJudgeJavaCode(judgeSubmitDTO));
     }

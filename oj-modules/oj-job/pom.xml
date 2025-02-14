@@ -8,7 +8,7 @@
         <version>oj-modules-SNAPSHOT</version>
     </parent>
 
-    <artifactId>oj-obj</artifactId>
+    <artifactId>oj-job</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

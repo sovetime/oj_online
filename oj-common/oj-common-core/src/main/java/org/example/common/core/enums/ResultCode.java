@@ -54,7 +54,8 @@ public enum ResultCode {
     FAILED_FIRST_QUESTION               (3501, "当前题目已经是第一题了哦"),
     FAILED_LAST_QUESTION                (3502, "当前题目已经是最后一题了哦"),
     FAILED_NOT_SUPPORT_PROGRAM          (3601, "当前不支持此语言"),
-    FAILED_RABBIT_PRODUCE               (3701, "mq生产消息异常");
+    FAILED_RABBIT_PRODUCE               (3701, "mq生产消息异常"),
+    FAILED_RABBIT_CONSUME               (3702, "mq接收消息异常");
 
     private int code;
 

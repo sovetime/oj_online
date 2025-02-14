@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.api.domain.dto.JudgeSubmitDTO;
 import org.example.common.core.constants.RabbitMQConstants;
 import org.example.common.core.enums.ResultCode;
+import org.example.rabbitmq.RabbitConfig;
 import org.example.security.exception.ServiceException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -119,7 +119,7 @@ create table tb_user_submit(
         program_type    tinyint NOT NULL COMMENT '代码类型 0-java 1-cpp',
         user_code       text NOT NULL COMMENT '用户代码',
         pass            tinyint NOT NULL COMMENT '0：未通过  1：通过',
-        exe_message     varchar(500) NOT NULL COMMENT '执行结果',
+        exe_message     varchar(1000) NOT NULL COMMENT '执行结果',
         score           int NOT NULL DEFAULT '0' COMMENT '得分',
         case_judge_res  varchar(1000) COMMENT '用例输出结果',
 
@@ -131,6 +131,11 @@ create table tb_user_submit(
 );
 
 -- 我的消息功能
+# 站内信：网站内部的一种通信方式。
+#  1.用户和用户之间的通信。（点对点）
+#  2.管理员/系统  和 某个用户之间的通信。（点对点）  ===》竞赛结果的通信消息
+#  3. 管理员/系统 和 某个用户群（指的是满足某一条件的用户的群体）之间的通信。（点对面）
+
 -- 消息内容表
 create table tb_message_text(
         text_id         bigint unsigned NOT NULL COMMENT '消息内容id（主键）',

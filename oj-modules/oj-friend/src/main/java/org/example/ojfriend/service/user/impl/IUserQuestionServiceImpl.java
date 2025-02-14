@@ -28,7 +28,8 @@ import org.example.ojfriend.service.user.IUserQuestionService;
 import org.example.security.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 
 @Service
@@ -86,8 +87,7 @@ public class IUserQuestionServiceImpl implements IUserQuestionService{
         return resultVO;
     }
 
-
-    //组装用户提交的代码 赋值JudgeSubmitDTO属性
+    //组装用户提交的代码,赋值JudgeSubmitDTO属性
     private JudgeSubmitDTO assembleJudgeSubmitDTO(UserSubmitDTO submitDTO) {
         Long questionId = submitDTO.getQuestionId();
         //从es中获取题目信息，orElse(null)表示如果没有查到数据返回null，有数据范围返回对应查询出的数据，findById是Optional类型的

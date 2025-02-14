@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("org.example.**.mapper")
+@MapperScan("org.example.ojsystem.**.mapper")
 public class OjSystemApplication {
 
     public static void main(String[] args) {

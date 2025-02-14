@@ -3,6 +3,8 @@ package org.example.ojfriend.mapper.user;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.example.ojfriend.domain.user.UserSubmit;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * Description:
@@ -12,5 +14,7 @@ import org.example.ojfriend.domain.user.UserSubmit;
 public interface UserSubmitMapper extends BaseMapper<UserSubmit> {
 
     UserSubmit selectCurrentUserSubmit(Long userId, Long examId, Long questionId, String currentTime);
+
+    List<Long> selectHostQuestionList();
 
 }

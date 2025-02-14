@@ -35,12 +35,11 @@ public class ExamController extends BaseController {
         return examService.redisList(examQueryDTO);
     }
 
-//    @GetMapping("/rank/list")
-//    @Operation(summary = "",description = "" )
-//    public TableDataInfo rankList(ExamRankDTO examRankDTO) {
-//        return examService.rankList(examRankDTO);
-//    }
-
+    @GetMapping("/rank/list")
+    @Operation(summary = "竞赛排名列表")
+    public TableDataInfo rankList(ExamRankDTO examRankDTO) {
+        return examService.rankList(examRankDTO);
+    }
 
     @GetMapping("/getFirstQuestion")
     @Operation(summary = "获取竞赛的第一个题目")

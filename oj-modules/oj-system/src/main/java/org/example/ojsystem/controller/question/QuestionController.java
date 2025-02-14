@@ -32,17 +32,11 @@ public class QuestionController extends BaseController {
     public TableDataInfo list(QuestionQueryDTO questionQueryDTO) {
         return getTableDataInfo(questionService.list(questionQueryDTO));
     }
-//    @Operation(summary = "编辑题目",description = "登录之后才能进行编辑")
-//    @PostMapping("/add")
-//    public R<Void> add(@RequestBody QuestionAddDTO questionAddDTO) {
-//        return toR(questionService.add(questionAddDTO));
-//    }
 
     @PostMapping("/add")
     @Operation(summary = "新增题目",description = "登录之后才能进行添加")
     public R<Void> add(@RequestBody QuestionAddDTO questionAddDTO) {
-        questionService.add(questionAddDTO);
-        return R.ok();
+        return toR(questionService.add(questionAddDTO));
     }
 
     @Operation(summary = "显示题目详细信息",description = "获取题目的详细信息")

@@ -2,6 +2,7 @@ package org.example.ojfriend.service.exam;
 
 import org.example.common.core.domain.TableDataInfo;
 import org.example.ojfriend.domain.exam.dto.ExamQueryDTO;
+import org.example.ojfriend.domain.exam.dto.ExamRankDTO;
 import org.example.ojfriend.domain.exam.vo.ExamVO;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public interface IExamService {
     List<ExamVO> list(ExamQueryDTO examQueryDTO);
 
     TableDataInfo redisList(ExamQueryDTO examQueryDTO);
+
+    TableDataInfo rankList(ExamRankDTO examRankDTO);
+
 
     String getFirstQuestion(Long examId);
 

@@ -3,6 +3,7 @@ package org.example.ojsystem.service.sysuser.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.example.common.core.constants.HttpConstants;
 import org.example.common.core.domain.LoginUser;
 import org.example.common.core.domain.R;
@@ -30,6 +31,7 @@ import java.util.List;
  * Date: 2024-12-30
  * Time: 15:48
  */
+@Slf4j
 @Service
 //使用 Spring Cloud Config或者其他配置管理工具时，能够动态加载配置文件中的配置信息，不需要重新启动服务
 @RefreshScope
@@ -57,7 +59,6 @@ public class SysUserServiceImpl implements ISysUserService {
             return R.fail(ResultCode.FAILED_USER_NOT_EXISTS);
         }
         if(BCryptUtils.matchesPassword(password, sysUser.getPassword())){
-
             return R.ok(tokenService.createToken(sysUser.getUserId(),
                     secret, UserIdentity.ADMIN.getValue(),sysUser.getNickName(),null));
         }

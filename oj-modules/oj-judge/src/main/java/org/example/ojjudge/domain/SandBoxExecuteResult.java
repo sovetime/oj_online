@@ -9,13 +9,9 @@ import java.util.List;
 public class SandBoxExecuteResult {
 
     private CodeRunStatus runStatus;  //执行结果
-
     private String exeMessage;   //异常信息
-
     private List<String> outputList; //执行结果
-
     private Long useMemory;  //占用内存  kb
-
     private Long useTime;   //消耗时间   ms
 
     public static SandBoxExecuteResult fail(CodeRunStatus runStatus, String errorMsg) {

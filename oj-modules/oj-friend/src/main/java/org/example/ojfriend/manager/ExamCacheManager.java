@@ -82,9 +82,10 @@ public class ExamCacheManager {
         return examVOList;
     }
 
+    //获取竞赛排名列表
     public List<ExamRankVO> getExamRankList(ExamRankDTO examRankDTO) {
         int start = (examRankDTO.getPageNum() - 1) * examRankDTO.getPageSize();
-        int end = start + examRankDTO.getPageSize() - 1; //下标需要 -1
+        int end = start + examRankDTO.getPageSize() - 1;
         return redisService.getCacheListByRange(getExamRankListKey(examRankDTO.getExamId()), start, end, ExamRankVO.class);
     }
 
@@ -196,16 +197,15 @@ public class ExamCacheManager {
         redisService.expire(getExamQuestionListKey(examId), seconds, TimeUnit.SECONDS);
     }
 
-//
-//    public void refreshExamRankCache(Long examId) {
-//        List<ExamRankVO> examRankVOList = userExamMapper.selectExamRankList(examId);
-//        if (CollectionUtil.isEmpty(examRankVOList)) {
-//            return;
-//        }
-//        redisService.rightPushAll(getExamRankListKey(examId), examRankVOList);
-//    }
-//
 
+    //刷新竞赛排行榜缓存
+    public void refreshExamRankCache(Long examId) {
+        List<ExamRankVO> examRankVOList = userExamMapper.selectExamRankList(examId);
+        if (CollectionUtil.isEmpty(examRankVOList)) {
+            return;
+        }
+        redisService.rightPushAll(getExamRankListKey(examId), examRankVOList);
+    }
 
     //获取redis当中的竞赛列表
     private List<ExamVO> assembleExamVOList(List<Long> examIdList) {

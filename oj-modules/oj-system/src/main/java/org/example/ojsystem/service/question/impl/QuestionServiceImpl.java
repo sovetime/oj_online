@@ -4,8 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.example.common.core.domain.TableDataInfo;
 import org.example.common.core.enums.ResultCode;
 import org.example.ojsystem.domain.question.Question;
 import org.example.ojsystem.domain.question.dto.QuestionAddDTO;
@@ -14,13 +12,14 @@ import org.example.ojsystem.domain.question.dto.QuestionQueryDTO;
 import org.example.ojsystem.domain.question.es.QuestionES;
 import org.example.ojsystem.domain.question.vo.QuestionDetailVO;
 import org.example.ojsystem.domain.question.vo.QuestionVO;
-//import org.example.ojsystem.elasticsearch.QuestionRepository;
-//import org.example.ojsystem.manager.QuestionCacheManager;
+import org.example.ojsystem.elasticsearch.QuestionRepository;
+import org.example.ojsystem.manager.QuestionCacheManager;
 import org.example.ojsystem.mapper.question.QuestionMapper;
 import org.example.ojsystem.service.question.IQuestionService;
 import org.example.security.exception.ServiceException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,10 +36,10 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
-//    @Autowired
-//    private QuestionRepository questionRepository;
-//    @Autowired
-//    private QuestionCacheManager questionCacheManager;
+    @Autowired
+    private QuestionRepository questionRepository;
+    @Autowired
+    private QuestionCacheManager questionCacheManager;
 
     @Override
     public List<QuestionVO> list(QuestionQueryDTO questionQueryDTO) {
@@ -51,42 +50,32 @@ public class QuestionServiceImpl implements IQuestionService {
         return questionVOList;
     }
 
-//    @Override
-//    public boolean add(QuestionAddDTO questionAddDTO) {
-//        //查询数据库中是否存在相同标题的文章，有相同标题的文章抛出异常
-//        List<Question> questionList=questionMapper.selectList(new LambdaQueryWrapper<Question>()
-//                .eq(Question::getTitle,questionAddDTO.getTitle()));
-//        if(CollectionUtil.isEmpty(questionList)){
-//            throw new ServiceException(ResultCode.FAILED_ALREADY_EXISTS);
-//        }
-//
-//        Question question=new Question();
-//        //将 questionAddDTO 对象中的属性值复制到 question 对象中
-
-//        BeanUtils.copyProperties(questionAddDTO,question);
-//        int insert = questionMapper.insert(question);
-//        if(insert<=0){
-//            return false;
-//        }
-//        QuestionES questionES=new QuestionES();
-//        BeanUtil.copyProperties(question, questionES);
-//        questionRepository.save(questionES);
-//        questionCacheManager.addCache(question.getQuestionId());
-//        return true;
-//    }
-
     @Override
-    public void add(QuestionAddDTO questionAddDTO) {
+    public boolean add(QuestionAddDTO questionAddDTO) {
+        //查询数据库中是否存在相同标题的文章，有相同标题的文章抛出异常
         List<Question> questionList=questionMapper.selectList(new LambdaQueryWrapper<Question>()
                 .eq(Question::getTitle,questionAddDTO.getTitle()));
-        if(CollectionUtil.isNotEmpty(questionList)){
+        if(CollectionUtil.isEmpty(questionList)){
             throw new ServiceException(ResultCode.FAILED_ALREADY_EXISTS);
         }
 
-        Question question = new Question();
-        BeanUtils.copyProperties(questionAddDTO, question);
-        questionMapper.insert(question);
+        //新增题目
+        Question question=new Question();
+        BeanUtils.copyProperties(questionAddDTO,question);
+        int insert = questionMapper.insert(question);
+        if(insert<=0){
+            return false;
+        }
+
+        //保存到es中
+        QuestionES questionES=new QuestionES();
+        BeanUtil.copyProperties(question, questionES);
+        questionRepository.save(questionES);
+        //添加缓存
+        questionCacheManager.addCache(question.getQuestionId());
+        return true;
     }
+
 
     @Override
     public QuestionDetailVO detail(Long questionId) {
@@ -107,6 +96,11 @@ public class QuestionServiceImpl implements IQuestionService {
             throw new ServiceException(ResultCode.FAILED_NOT_EXISTS);
         }
         BeanUtils.copyProperties(questionEditDTO, question);
+
+        //对es存储的题库进行更新
+        QuestionES questionES = new QuestionES();
+        BeanUtil.copyProperties(question, questionES);
+        questionRepository.save(questionES);
         return questionMapper.updateById(question);
     }
 
@@ -116,6 +110,8 @@ public class QuestionServiceImpl implements IQuestionService {
         if (question == null) {
             throw new ServiceException(ResultCode.FAILED_NOT_EXISTS);
         }
+        questionRepository.deleteById(questionId);
+        questionCacheManager.deleteCache(questionId);
         return questionMapper.deleteById(questionId);
     }
 
