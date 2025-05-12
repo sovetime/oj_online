@@ -1,3 +1,5 @@
 /logs/
 /.idea/
-/user-code/
+/user-code-pool/
+/oj-modules/oj-friend/src/main/resources/static/
+
